@@ -20,7 +20,10 @@ const uri = process.env.MONGO_URL;
 const app = express();
 
 app.use(cors({
-  origin: true,
+  origin: [
+    "https://zerodha-clone-frontend-1j7w.vercel.app/",
+    "https://zerodha-clone-frontend-1j7w.vercel.app/"
+  ],
   credentials: true,
 }));
 
