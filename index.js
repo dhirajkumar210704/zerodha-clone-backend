@@ -1,6 +1,10 @@
-require('dotenv').config();
+/** @format */
+
+require("dotenv").config();
 const refreshAllHoldingsPrices = require("./server/util/PriceRefresher");
-const { refreshWatchlistPrices } = require("./server/util/WatchlistPriceService");
+const {
+  refreshWatchlistPrices,
+} = require("./server/util/WatchlistPriceService");
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
@@ -19,13 +23,15 @@ const uri = process.env.MONGO_URL;
 
 const app = express();
 
-app.use(cors({
-  origin: [
-    "https://zerodha-clone-frontend-1j7w.vercel.app/",
-    "https://zerodha-clone-frontend-1j7w.vercel.app/"
-  ],
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: [
+      "https://zerodha-clone-frontend-1j7w.vercel.app",
+      "https://zerodha-clone-dashboard-bv5d.vercel.app",
+    ],
+    credentials: true,
+  }),
+);
 
 // app.use(cors({
 //   origin: ["http://localhost:3000", "http://localhost:3001"],
@@ -61,7 +67,7 @@ app.get("/holdings", verifyUser, async (req, res) => {
   }
 });
 
-app.get('/allPositions', async(req, res) => {
+app.get("/allPositions", async (req, res) => {
   let allPositions = await PositionsModel.find({});
   res.json(allPositions);
 });
@@ -131,21 +137,27 @@ app.post("/trade", verifyUser, async (req, res) => {
   }
 });
 
-mongoose.connect(uri)
+mongoose
+  .connect(uri)
   .then(() => {
     app.listen(PORT, () => {
       console.log("Server running & DB connected");
     });
   })
-  .catch(err => console.log(err));
+  .catch((err) => console.log(err));
 
 // All holdings price refresh
-setInterval(() => {
-  refreshAllHoldingsPrices();
-}, 2 * 60 * 1000);
+setInterval(
+  () => {
+    refreshAllHoldingsPrices();
+  },
+  2 * 60 * 1000,
+);
 
-// Watchlist price refresh 
-setInterval(() => {
-  refreshWatchlistPrices();
-}, 2 * 60 * 1000);
-
+// Watchlist price refresh
+setInterval(
+  () => {
+    refreshWatchlistPrices();
+  },
+  2 * 60 * 1000,
+);
